@@ -1,3 +1,13 @@
+<div class="row mb-2">
+  <div class="col-8">
+    <h1 class="display-4 font-weight-normal">Tarefas</h1>
+  </div>
+
+  <div class="col-4 mt-4 text-right">
+    <%= link_to '+ Tarefa', new_task_path, class: 'btn btn-success' %>
+  </div>
+</div>
+
 <% if notice %>
   <p style="color: green"><%= notice %></p>
 <% end %>

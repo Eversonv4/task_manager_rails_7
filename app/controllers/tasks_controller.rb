@@ -3,6 +3,7 @@ class TasksController < ApplicationController
 
   def index
     @tasks = Task.all
+    @files = Dir.glob('*')
   end
 
   def new
@@ -16,23 +17,25 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
 
     if @task.save
-      redirect_to task_url(@task), notice: "Task was successfully created."
+      redirect_to tasks_path, notice: "Tarefa criada com sucesso."
     else
+      flash.now[:alert] = @task.errors.full_messages
       render :new
     end
   end
 
   def update
-    if @task.update(task_params)
-      redirect_to task_url(@task), notice: "Task was successfully updated."
-    else
-      render :edit
-    end
-  end
+      if @task.update(task_params)
+        redirect_to tasks_path, notice: "Tarefa foi atualizada com sucesso." 
+      else
+        flash.now[:alert] = @task.errors.full_messages.to_sentence
+        render :edit
+      end
+  end 
 
   def destroy
     @task.destroy
-    redirect_to tasks_url, notice: "Task was successfully destroyed."
+    redirect_to tasks_url, notice: "Tarefa foi removida com sucesso."
   end
 
   private
