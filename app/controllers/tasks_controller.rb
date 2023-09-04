@@ -16,27 +16,35 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
 
-    if @task.save
-      redirect_to tasks_path, notice: "Tarefa criada com sucesso."
-    else
-      flash.now[:alert] = @task.errors.full_messages
-      render :new
+    respond_to do |format|
+      if @task.save
+        format.html { redirect_to tasks_path, notice: "Tarefa criada com sucesso." }
+      else
+        flash.now[:alert] = @task.errors.full_messages.to_sentence
+        format.html { render :new, status: :unprocessable_entity  }
+      end
     end
   end
 
   def update
+    respond_to do |format|
       if @task.update(task_params)
-        redirect_to tasks_path, notice: "Tarefa foi atualizada com sucesso." 
+        format.html { redirect_to tasks_path, notice: "Tarefa foi atualizada com sucesso." }
       else
         flash.now[:alert] = @task.errors.full_messages.to_sentence
-        render :edit
+        format.html { render :edit, status: :unprocessable_entity }
       end
+    end
   end 
 
   def destroy
     @task.destroy
-    redirect_to tasks_url, notice: "Tarefa foi removida com sucesso."
+
+    respond_to do |format|
+      format.html { redirect_to tasks_url, notice: "Tarefa foi removida com sucesso." }
+    end
   end
+
 
   private
     def set_task
