@@ -2,8 +2,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: %i[ edit update destroy ]
 
   def index
-    @tasks = Task.all
-    @files = Dir.glob('*')
+    @tasks = Task.only_parents.order(due_date: :desc)
   end
 
   def new

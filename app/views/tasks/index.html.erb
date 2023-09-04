@@ -20,34 +20,16 @@
 
     <tbody>
       <% @tasks.each do |task| %>
-        <tr class="border-top">
-          <td><%= task.description %></td>
-          <td>
-            <% if(task.due_date) %>
-              <%= I18n.l( task.due_date ) %>
-            <% end %>
-          </td>
-        </tr>
+        <%= render "table_row", task: task %>
+
+        <% task.sub_tasks.order(:due_date).each do |sub_task| %>
+          <%= render "table_row", task: sub_task %>
+        <% end %>
       <% end %>
     </tbody>
   </table>
 <% else %>
   <p>Nenhuma tarefa foi cadastrada ainda.</p>
 <% end %>
-
-<!-- <% if notice %>
-  <p style="color: green"><%= notice %></p>
-<% end %>
-
-<h1>Tasks</h1>
-
-<div id="tasks">
-  <% @tasks.each do |task| %>
-    <%= render task %>
-    <p>
-      <%= link_to "Show this task", task %>
-    </p>
-  <% end %>
-</div> -->
 
 <%= link_to "New task", new_task_path %>
