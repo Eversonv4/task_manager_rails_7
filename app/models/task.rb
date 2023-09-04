@@ -23,6 +23,14 @@ class Task < ApplicationRecord
     end
   end
 
+  def parent?
+    parent_id.nil?
+  end
+
+  def sub_tasks?
+    !parent?
+  end
+
   private
 
   def status 
